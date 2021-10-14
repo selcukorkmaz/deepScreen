@@ -5,18 +5,15 @@ Created on Wed Dec 18 09:01:48 2019
 
 @author: selcukkorkmaz
 """
+# import the necessary packages
 from numpy.random import seed
 seed(123)
 import tensorflow as tf
 tf.random.set_seed(123) 
-
-#import matplotlib
-#matplotlib.use("Agg")
-
-# import the necessary packages
-from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import Adam
-from keras.preprocessing.image import img_to_array
+from tensorflow import keras 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import img_to_array
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 #from pyimagesearch.smallervggnet import SmallerVGGNet
@@ -24,12 +21,12 @@ import matplotlib.pyplot as plt
 from imutils import paths
 import numpy as np
 import argparse
-import random
+#import random
 import pickle
 import cv2
 import os
 from keras.models import Sequential
-from keras.layers.normalization import BatchNormalization
+from tensorflow.keras.layers import BatchNormalization
 from keras.layers.convolutional import Conv2D
 from keras.layers.convolutional import MaxPooling2D
 from keras.layers.core import Activation
@@ -46,21 +43,21 @@ import matplotlib.pyplot as plt
 
 
 
-X_train = pd.read_csv("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/numericalData/dataset/AID_485314/afterPreprocess/train/X_train.txt", delimiter="\t")
-y_train = pd.read_csv("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/numericalData/dataset/AID_485314/afterPreprocess/train/Y_train.txt", delimiter="\t")
-X_test = pd.read_csv("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/numericalData/dataset/AID_485314/afterPreprocess/test/X_test.txt", delimiter="\t")
-y_test = pd.read_csv("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/numericalData/dataset/AID_485314/afterPreprocess/test/Y_test.txt", delimiter="\t")
+X_train = pd.read_csv("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/AID_485314/afterPreprocess/train/X_train.txt", delimiter="\t")
+y_train = pd.read_csv("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/AID_485314/afterPreprocess/train/Y_train.txt", delimiter="\t")
+X_test = pd.read_csv("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/AID_485314/afterPreprocess/test/X_test.txt", delimiter="\t")
+y_test = pd.read_csv("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/AID_485314/afterPreprocess/test/Y_test.txt", delimiter="\t")
 
 ratio = round((Counter(y_train['PUBCHEM_ACTIVITY_OUTCOME'])[0] / Counter(y_train['PUBCHEM_ACTIVITY_OUTCOME'])[1]))
 
 
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import pandas as pd
 
 img_size = [96,96]
 
 # Getting the train images and rescaling
-train_image_folder = '/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/imageData/pubchem/pose/train'
+train_image_folder = '/home/vmplatin/deepDrug/deepScreen/imageData/pubchem/pose/train'
 train_image_generator = ImageDataGenerator(rescale=1./255).flow_from_directory(
         train_image_folder, shuffle=False, class_mode='binary',
         target_size=(img_size[0], img_size[1]), batch_size=X_train.shape[0])
@@ -83,7 +80,7 @@ y_train_sorted = y_train.reindex(train_image_files)
 
 
 # Getting the test images and rescaling
-test_image_folder = '/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise/imageData/pubchem/pose/test'
+test_image_folder = '/home/vmplatin/deepDrug/deepScreen/imageData/pubchem/pose/test'
 test_image_generator = ImageDataGenerator(rescale=1./255).flow_from_directory(
         test_image_folder, shuffle=False, class_mode='binary',
         target_size=(img_size[0], img_size[1]), batch_size=X_test.shape[0])
@@ -122,7 +119,7 @@ def f1_m(y_true, y_pred):
     recall = recall_m(y_true, y_pred)
     return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
-from keras.models import Sequential
+from tensorflow.keras.models import Sequential
 from keras.layers.core import Dense
 
 def create_mlp(dim, dropout=0.50):
@@ -150,9 +147,9 @@ def create_mlp(dim, dropout=0.50):
 from keras.layers import Flatten, Input, concatenate
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.layers.core import Activation, Dropout, Dense
-from keras.layers.normalization import BatchNormalization
+from tensorflow.keras.layers import BatchNormalization
 from keras.models import Model
-from keras.applications import MobileNet
+from tensorflow.keras.applications import MobileNet
 from keras.layers import Dense,GlobalAveragePooling2D
 
 cost_FP = 1
@@ -240,8 +237,8 @@ def create_cnn(width, height, depth, filters=(4, 8, 12), dropout=0.50, regulariz
     # Return the CNN
     return model    
 
-from keras.models import Sequential
-from keras.optimizers import Adam # Other optimisers are available
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam # Other optimisers are available
 
 # Create the MLP and CNN models
 mlp = create_mlp(X_train_sorted.shape[1])
@@ -328,7 +325,7 @@ mcc = ((tp*tn) - (fp*fn))/math.sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))
 auc = roc_auc_score(Y_test, y_pred[:,0])
 
 
-cnf_matrix
+print(cnf_matrix)
 
 
 

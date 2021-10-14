@@ -4,7 +4,7 @@ rm(list = ls())
 
 aid = "AID_485314" #change AID
 
-path = paste0("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/exercise2/imageData/pubchem/aid/",aid,
+path = paste0("/home/vmplatin/deepDrug/deepScreen/imageData/pubchem/aid/",aid,
               "_datatable_all.csv")
 comps = read.csv(path, header = T, stringsAsFactors = F)
 dim(comps)
@@ -38,7 +38,7 @@ table(comps4$PUBCHEM_ACTIVITY_OUTCOME)
 library(dplyr)
 library(data.table)
 
-path = paste0("~/Documents/Studies/DeepCNNandMLP/exercise2/numericalData/dataset/",aid,"/beforePreprocess/",aid,".txt")
+path = paste0("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/",aid,"/beforePreprocess/",aid,".txt")
 
 data = fread(path,sep = "\t")
 dim(data)
@@ -137,14 +137,14 @@ table(datasetM$PUBCHEM_ACTIVITY_OUTCOME)
 zv = list()
 
 for(i in 1:ncol(datasetM)){
-  
+
   sdev = sd(datasetM[,i])
-  
+
   if(sdev == 0){
-    
+
     zv[[i]] = i
   }
-  
+
   print(i)
 }
 
@@ -159,22 +159,22 @@ table(dataset6$PUBCHEM_ACTIVITY_OUTCOME)
 
 
 # ### Z-score transformation ####
-# 
+#
 # # Find numerical variables for z-score transformation
-# 
+#
 zList = list()
 
 for(i in 2:ncol(dataset6)){
-  
+
   if(length(unique(dataset6[,i])) > 2){
-    
+
     zList[[i]] = colnames(dataset6[i])
-    
-    
+
+
   }
-  
+
   print(i)
-  
+
 }
 
 zTransform = unlist(zList)
@@ -183,15 +183,15 @@ length(zTransform)
 # apply z-score transformation
 
 for(i in 1:(ncol(dataset6))){
-  
+
   if(colnames(dataset6[i]) %in% zTransform){
-    
+
     dataset6[,i] = scale(dataset6[,i])
-    
+
   }
-  
+
   print(i)
-  
+
 }
 
 dim(dataset6)
@@ -208,7 +208,7 @@ table(dataset6$PUBCHEM_ACTIVITY_OUTCOME)
 # Y = dataset6[ncol(dataset6)]
 # dataset6[1:4,1:4]
 
-path = paste0("~/Documents/Studies/DeepCNNandMLP/exercise2/numericalData/dataset/",aid,"/afterPreprocess/",aid,".txt")
+path = paste0("/home/vmplatin/deepDrug/deepScreen/numericalData/dataset/",aid,"/afterPreprocess/",aid,".txt")
 # pathX = paste0("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/numericalData/dataset/",aid,"/afterPreprocess/X.txt")
 # pathY = paste0("/Users/selcukkorkmaz/Documents/Studies/DeepCNNandMLP/numericalData/dataset/",aid,"/afterPreprocess/Y.txt")
 
